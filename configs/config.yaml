@@ -1,0 +1,61 @@
+dataset:
+  in_channels: 1
+  data_scaling: True
+  batch_sizes:
+    stage1: 64
+    stage2: 128
+  num_workers: 0
+
+exp_params:
+  LR: 0.001
+  weight_decay: 0.00001
+
+trainer_params:
+  max_epochs:
+    stage1: 1000
+    stage2: 2000
+
+
+encoder:
+  dim: 64
+  n_resnet_blocks: 4
+  downsampled_width:
+    lf: 8
+    hf: 32
+
+decoder:
+  dim: 64
+  n_resnet_blocks: 4
+
+
+VQ-VAE:
+  n_fft: 8
+  codebook_sizes:
+    lf: 32
+    hf: 32
+  decay: 0.8
+  commitment_weight: 1.
+  codebook_dim: 64
+  emb_dropout: 0.
+  perceptual_loss_weight: 0
+
+
+MaskGIT:
+  choice_temperatures: # for masking
+    lf: 4
+    hf: 4
+  stochastic_sampling: 1  # from (Lee et al., 2022)
+  T: 10
+  prior_model:
+    hidden_dim: 256
+    n_layers: 4
+    heads: 2
+    ff_mult: 1
+    use_rmsnorm: True
+    p_unconditional: 0.2
+  ESS:
+    use: True
+    error_ratio_ma_rate: 0.3
+
+class_guidance:
+  guidance_scale: 1.
